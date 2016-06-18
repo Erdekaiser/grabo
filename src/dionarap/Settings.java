@@ -5,8 +5,9 @@
  */
 package dionarap;
 
+import de.fhwgt.dionarap.controller.DionaRapController;
+import de.fhwgt.dionarap.model.data.DionaRapModel;
 import de.fhwgt.dionarap.model.data.MTConfiguration;
-import de.fhwgt.dionarap.model.objects.Ammo;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,20 +16,109 @@ import java.util.Map;
  * @author Fabian
  */
 public class Settings {
-    Map<String, String>spieleinstellungen = new HashMap<String, String>();
     
-    Settings(Hauptfenster fenster){
-        MTConfiguration conf = new MTConfiguration(); 
+    static public final String WGB = "Wartezeit der Gegner zu Beginn";
+    static public final String VES = "Verzögerung eines Schusses";
+    static public final String WGS = "Wartezeit eines Gegners vor jedem Schnritt";
+    static public final String ZWG = "Zufällige Wartezeit der Gegner";
+    static public final String GKH = "Gegner meiden Kollision mit Hindernis";
+    static public final String GKG = "Gegner meiden Kollision mit anderen Gegnern";
+    static public final String AZS = "Anzahl Zeilen des Spielfelds";
+    static public final String ASS = "Anzahl der Spalten eines Spielfelds";
+    static public final String AHI = "Anzahl Hindernisse";
+    static public final String ADG = "Anzahl der Gegner";
+    
+    private HashMap<String, String>spieleinstellungen = new HashMap<String, String>();
+    private MTConfiguration conf;
+    private Hauptfenster fenster;
+    private final Spielfeld feld;
+    private final DionaRapModel model;
+    private final DionaRapController controller;
+    
+    Settings(Hauptfenster fenster, HashMap<String, String>TEMPspieleinstellungen){
+        this.spieleinstellungen = TEMPspieleinstellungen;
+        initSpieleinstellungen();
+        this.fenster = fenster;
+        model = new DionaRapModel(
+            Integer.parseInt(spieleinstellungen.get(ASS)),
+            Integer.parseInt(spieleinstellungen.get(AZS)),
+            Integer.parseInt(spieleinstellungen.get(ADG)),
+            Integer.parseInt(spieleinstellungen.get(AHI))
+            );
+        controller = new DionaRapController(model);
+        //Immer wenn sich das Spielfeld ändert wird der listener aufgerufen 
+        ListenerModel listenerModel = new ListenerModel(fenster);
+        model.addModelChangedEventListener(listenerModel);
+                
+        feld = new Spielfeld(fenster, Integer.parseInt(spieleinstellungen.get(AZS)), Integer.parseInt(spieleinstellungen.get(ASS)));
+        setSettings(spieleinstellungen);
+        
+    }
+    
+    public String getSingleSettings(String key){
+        return spieleinstellungen.get(key);
+    }
+    
+    public void setSingleSettings(String key, String value){
+        spieleinstellungen.put(key, value);
+    }
+    
+    public HashMap<String, String> getSettings(){
+        return this.spieleinstellungen;
+    }
+    
+    public void setSettings(Map<String, String>map){
+        if(conf == null){
+            conf = new MTConfiguration();
+        }
+        conf.setOpponentStartWaitTime(Integer.parseInt(spieleinstellungen.get(WGB)));
+        conf.setShotWaitTime(Integer.parseInt(spieleinstellungen.get(VES)));
+        conf.setOpponentWaitTime(Integer.parseInt(spieleinstellungen.get(WGS)));
+        conf.setRandomOpponentWaitTime(Boolean.parseBoolean(spieleinstellungen.get(ZWG))); 
+        conf.setAvoidCollisionWithObstacles(Boolean.parseBoolean(spieleinstellungen.get(GKH)));
+        conf.setAvoidCollisionWithOpponent(Boolean.parseBoolean(spieleinstellungen.get(GKG))); 
+        //Zeilen&Spalten müssen noch gesetzt werden könnnen.
+        System.out.println(Integer.parseInt(spieleinstellungen.get(ASS)));
+        //feld.setZeilenSpalten(Integer.parseInt(spieleinstellungen.get(AZS)), Integer.parseInt(spieleinstellungen.get(ASS)));
+        //Anz.Hindernisse&Anz.Gegner müssen noch gesetzt werden können.
+        
+        //Stand Aufgabe müssen diese Werte nicht geändert werden können.
         conf.setAlgorithmAStarActive(true); 
-        conf.setAvoidCollisionWithObstacles(true); 
-        conf.setAvoidCollisionWithOpponent(false); 
         conf.setMinimumTime(800);               // 0,8 Sekunden
         conf.setShotGetsOwnThread(true);        // nicht unbegrenzte Anzahl Schüsse 
-        conf.setOpponentStartWaitTime(5000);    // 5 Sekunden am Anfang Schlaf 
-        conf.setOpponentWaitTime(2000);         // Gegner warten vor jedem Zug 2 Sekunden  
-        conf.setShotWaitTime(500);              // ein Schuss benötigt eine halbe Sekunde 
-        conf.setRandomOpponentWaitTime(false);  // keine zufällige Wartezeit 
         conf.setDynamicOpponentWaitTime(false); // immer gleichlang warten 
-        fenster.getController().setMultiThreaded(conf);
+            
+        controller.setMultiThreaded(conf);
+    }
+    
+    private void initSpieleinstellungen(){
+        if(spieleinstellungen.isEmpty()){
+            spieleinstellungen.put(WGB, "5000");
+            spieleinstellungen.put(VES, "500");
+            spieleinstellungen.put(WGS, "2000");
+            spieleinstellungen.put(ZWG, "false");
+            spieleinstellungen.put(GKH, "true");
+            spieleinstellungen.put(GKG, "false");
+            spieleinstellungen.put(AZS, "10");
+            spieleinstellungen.put(ASS, "15");
+            spieleinstellungen.put(AHI, "5");
+            spieleinstellungen.put(ADG, "5");
+            System.out.println(spieleinstellungen);
+        }
+    }
+    
+    public DionaRapModel getModel()
+    {
+        return model;
+    }
+
+    public DionaRapController getController()
+    {
+        return controller;
+    }
+    
+    public Spielfeld getSpielfeld()
+    {
+        return feld;
     }
 }

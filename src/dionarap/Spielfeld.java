@@ -8,23 +8,33 @@ import javax.swing.*;
 /*Klasse für das Panel des Hauptfensters*/
 public class Spielfeld extends JPanel{
     
-private JLabel spielfeld_array[][] = new JLabel[10][10];    
+private int Spalten;
+private int Zeilen;    
+private JLabel spielfeld_array[][];    
 
 private GameStatus status = GameStatus.game;
+
 	
-    public Spielfeld(Hauptfenster fenster){
+    public Spielfeld(Hauptfenster fenster, int Zeilen, int Spalten){
             
             Hauptfenster hauptfenster = fenster;
             
             ListenerMouse mouseListener = new ListenerMouse(hauptfenster);
-        
+            
+            this.Zeilen = Zeilen;
+            this.Spalten = Spalten;
+            
+            this.spielfeld_array = new JLabel[Zeilen][Spalten];
+            
+            System.out.println("Spalten: " + Spalten + " Zeilen: " + Zeilen);
+            
             /*Gridlayout erstellen*/
-            this.setLayout(new GridLayout(10, 10));
+            this.setLayout(new GridLayout(Spalten, Zeilen));
 
             /*Label Array füllen*/
-            for(int j = 0; j < 10; j++)
+            for(int j = 0; j < Spalten; j++)
             {
-                    for(int i = 0; i < 10; i++){
+                    for(int i = 0; i < Zeilen; i++){
                             spielfeld_array[i][j] = new JLabel("",JLabel.CENTER);
                             spielfeld_array[i][j].setFont(new Font("Arial", Font.BOLD, 20) );
                             if((i+j)%2 == 0){
@@ -117,9 +127,9 @@ private GameStatus status = GameStatus.game;
     
     public void delete()
     {
-        for(int i = 0; i < 10; i++)
+        for(int i = 0; i < Zeilen; i++)
         {
-            for(int j = 0; j < 10; j++){
+            for(int j = 0; j < Spalten; j++){
                 spielfeld_array[i][j].setIcon(null);         
             }
         }
@@ -129,5 +139,10 @@ private GameStatus status = GameStatus.game;
         if(this.status == GameStatus.game){
             this.status = status;
         }
+    }
+    
+    public void setZeilenSpalten(int x, int y){
+        this.Zeilen = x;
+        this.Spalten = y;
     }
 }

@@ -45,10 +45,12 @@ public class ListenerMouse implements MouseListener{
             //Linke Maustaste
             if(e.getButton() == MouseEvent.BUTTON1)
             {
+                int zeilen = Integer.parseInt(hauptfenster.getSettings().getSingleSettings(Settings.AZS));
+                int spalten = Integer.parseInt(hauptfenster.getSettings().getSingleSettings(Settings.ASS));
                 //Ermittle geklicktes JLabel
-                for(int j = 0; j < 10; j++)
+                for(int j = 0; j < spalten; j++)
                 {
-                    for(int i = 0; i < 10; i++){
+                    for(int i = 0; i < zeilen; i++){
                         if(e.getSource() == spielfeld[i][j]){
                             mouseX = i;
                             mouseY = j;

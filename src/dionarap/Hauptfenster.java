@@ -5,14 +5,14 @@ import de.fhwgt.dionarap.model.data.DionaRapModel;
 import de.fhwgt.dionarap.model.data.MTConfiguration;
 import java.awt.BorderLayout;
 import java.awt.Point;
+import java.util.HashMap;
 import javax.swing.*;
 
 //Klasse für das Hauptfenster
 public class Hauptfenster extends JFrame {
     
-private final DionaRapModel model;
-private final DionaRapController controller;
-private final Spielfeld feld;
+
+
 private final Navigator navigator;
 private final Toolbar toolbar;
 
@@ -20,23 +20,24 @@ private String toolbarpos;
 private Point fensterpos;
 private Settings settings;
 
-public Hauptfenster(Point fensterpos, String toolbarpos)
+private HashMap<String, String>TEMPspieleinstellungen;
+
+public Hauptfenster(Point fensterpos, String toolbarpos, HashMap<String, String>spieleinstellungen)
 {
     this.fensterpos = fensterpos;
     this.toolbarpos = toolbarpos;
-        
+    this.TEMPspieleinstellungen = spieleinstellungen;
+    
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     this.setTitle("DionaRap");
     
-    model = new DionaRapModel();
-    controller = new DionaRapController(model);
+    settings = new Settings(this, TEMPspieleinstellungen);
+    
     navigator = new Navigator(this);
-    feld = new Spielfeld(this);
     toolbar = new Toolbar(this);
-    settings = new Settings(this);
+    
         
     //Listener werden erzeugt
-    ListenerModel listenerModel = new ListenerModel(this);
     TastenListener tastenListener = new TastenListener();
     KomponentenListener komponentenListener = new KomponentenListener();
     
@@ -46,16 +47,14 @@ public Hauptfenster(Point fensterpos, String toolbarpos)
     //Listener werden zugewiesen
     this.addComponentListener(komponentenListener);
     this.addKeyListener(tastenListener);
-    //Immer wenn sich das Spielfeld ändert wird der listener aufgerufen 
-    model.addModelChangedEventListener(listenerModel);
       
-    this.add(feld);
+    this.add(settings.getSpielfeld());
     this.setVisible(true);
     toolbarUpDown(toolbarpos);
  
     this.pack();
     
-    feld.draw();
+    settings.getSpielfeld().draw();
     
     //zu Beginn wird das fenster in die Mitte d. Bildschirmes gesetzt, danach übernimmt es immer die vorhergehende pos
     if(fensterpos != null){
@@ -69,12 +68,12 @@ public Hauptfenster(Point fensterpos, String toolbarpos)
 }
 
 public Hauptfenster(){
-    this(null, "Oben");
+    this(null, "Oben", new HashMap<String,String>());
 }
 
 public DionaRapModel getModel()
 {
-    return model;
+    return settings.getModel();
 }
 public Navigator getNavigator()
 {
@@ -82,21 +81,25 @@ public Navigator getNavigator()
 }
 public DionaRapController getController()
 {
-    return controller;
+    return settings.getController();
 }
 public Spielfeld getSpielfeld()
 {
-    return feld;
+    return settings.getSpielfeld();
+}
+
+public Settings getSettings(){
+    return settings;
 }
 
 public void startNewGame(){
     fensterpos = this.getLocation();
-        
+    TEMPspieleinstellungen = settings.getSettings();
     this.navigator.dispose();
     this.dispose();
      
         
-    new Hauptfenster(fensterpos, toolbarpos);
+    new Hauptfenster(fensterpos, toolbarpos, TEMPspieleinstellungen);
     //System.out.println("startNewGame: " + TOOLBARPOS);
 }
 
