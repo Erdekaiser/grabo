@@ -50,9 +50,9 @@ private GameStatus status = GameStatus.game;
     {
         //Oberste instance des Spielfelds wird aufgerufen
         Hauptfenster fenster = (Hauptfenster) this.getTopLevelAncestor();
-
-        DionaRapModel model = fenster.getModel();
         
+        DionaRapModel model = fenster.getModel();
+
         AbstractPawn[] pawns = fenster.getModel().getAllPawns();
         
         IconLoader loader = IconLoader.getTheme();

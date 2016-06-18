@@ -2,6 +2,7 @@ package dionarap;
 //import java.awt.*;
 import de.fhwgt.dionarap.controller.DionaRapController;
 import de.fhwgt.dionarap.model.data.DionaRapModel;
+import de.fhwgt.dionarap.model.data.MTConfiguration;
 import java.awt.BorderLayout;
 import java.awt.Point;
 import javax.swing.*;
@@ -17,12 +18,13 @@ private final Toolbar toolbar;
 
 private String toolbarpos;
 private Point fensterpos;
+private Settings settings;
 
 public Hauptfenster(Point fensterpos, String toolbarpos)
 {
     this.fensterpos = fensterpos;
     this.toolbarpos = toolbarpos;
-    
+        
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     this.setTitle("DionaRap");
     
@@ -31,12 +33,14 @@ public Hauptfenster(Point fensterpos, String toolbarpos)
     navigator = new Navigator(this);
     feld = new Spielfeld(this);
     toolbar = new Toolbar(this);
+    settings = new Settings(this);
         
     //Listener werden erzeugt
     ListenerModel listenerModel = new ListenerModel(this);
     TastenListener tastenListener = new TastenListener();
     KomponentenListener komponentenListener = new KomponentenListener();
     
+    //Konfig für Multi-Thread initialisieren.
     this.setJMenuBar(new MenuBar(this, new ListenerMenu(this)));
         
     //Listener werden zugewiesen
@@ -62,6 +66,10 @@ public Hauptfenster(Point fensterpos, String toolbarpos)
     
     //Fokus wird wieder auf das Fenster gelegt. Falls nicht würden man erneut in das fenster klicken müssen
     this.requestFocus();
+}
+
+public Hauptfenster(){
+    this(null, "Oben");
 }
 
 public DionaRapModel getModel()
@@ -130,11 +138,7 @@ public String getToolbarPos(){
 
 public static void main(String[] args)
 {
-    //Init
-    Point fensterpos = null;
-    String toolbarpos = "Oben";
-    
-    new Hauptfenster(fensterpos, toolbarpos);
+    new Hauptfenster();
 }
 	
 }
