@@ -16,6 +16,7 @@ public class Hauptfenster extends JFrame {
 private final Navigator navigator;
 private final Toolbar toolbar;
 
+private SettingsDialog settingsDialog;
 private String toolbarpos;
 private Point fensterpos;
 private Settings settings;
@@ -36,7 +37,6 @@ public Hauptfenster(Point fensterpos, String toolbarpos, HashMap<String, String>
     navigator = new Navigator(this);
     toolbar = new Toolbar(this);
     
-        
     //Listener werden erzeugt
     TastenListener tastenListener = new TastenListener();
     KomponentenListener komponentenListener = new KomponentenListener();
@@ -137,6 +137,10 @@ public void toolbarUpDown(String Position){
 
 public String getToolbarPos(){
     return toolbarpos;
+}
+
+public void newSettingDialog(){
+    settingsDialog = new SettingsDialog(this);
 }
 
 public static void main(String[] args)

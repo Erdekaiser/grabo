@@ -77,10 +77,6 @@ public class Settings {
         conf.setRandomOpponentWaitTime(Boolean.parseBoolean(spieleinstellungen.get(ZWG))); 
         conf.setAvoidCollisionWithObstacles(Boolean.parseBoolean(spieleinstellungen.get(GKH)));
         conf.setAvoidCollisionWithOpponent(Boolean.parseBoolean(spieleinstellungen.get(GKG))); 
-        //Zeilen&Spalten müssen noch gesetzt werden könnnen.
-        System.out.println(Integer.parseInt(spieleinstellungen.get(ASS)));
-        //feld.setZeilenSpalten(Integer.parseInt(spieleinstellungen.get(AZS)), Integer.parseInt(spieleinstellungen.get(ASS)));
-        //Anz.Hindernisse&Anz.Gegner müssen noch gesetzt werden können.
         
         //Stand Aufgabe müssen diese Werte nicht geändert werden können.
         conf.setAlgorithmAStarActive(true); 
@@ -89,20 +85,21 @@ public class Settings {
         conf.setDynamicOpponentWaitTime(false); // immer gleichlang warten 
             
         controller.setMultiThreaded(conf);
+        //fenster.repaint();
     }
     
     private void initSpieleinstellungen(){
         if(spieleinstellungen.isEmpty()){
-            spieleinstellungen.put(WGB, "5000");
-            spieleinstellungen.put(VES, "500");
-            spieleinstellungen.put(WGS, "2000");
+            spieleinstellungen.put(WGB, "5000");    //Setzt die Wartezeit der Gegner zu Beginn (Schlaf).
+            spieleinstellungen.put(VES, "500");     //Legt die Zeit fest, die ein Schuss benötigt, um von einem Feld zum Nächsten zu gelangen.
+            spieleinstellungen.put(WGS, "2000");    //Setzt die Intervallzeit zwischen Bewegungen eines Gegners.
             spieleinstellungen.put(ZWG, "false");
             spieleinstellungen.put(GKH, "true");
             spieleinstellungen.put(GKG, "false");
-            spieleinstellungen.put(AZS, "10");
+            spieleinstellungen.put(AZS, "25");
             spieleinstellungen.put(ASS, "15");
-            spieleinstellungen.put(AHI, "5");
-            spieleinstellungen.put(ADG, "5");
+            spieleinstellungen.put(AHI, "10");
+            spieleinstellungen.put(ADG, "10");
             System.out.println(spieleinstellungen);
         }
     }

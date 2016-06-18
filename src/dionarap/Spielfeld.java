@@ -26,7 +26,7 @@ private GameStatus status = GameStatus.game;
             
             this.spielfeld_array = new JLabel[Zeilen][Spalten];
             
-            System.out.println("Spalten: " + Spalten + " Zeilen: " + Zeilen);
+            //System.out.println("Spalten: " + Spalten + " Zeilen: " + Zeilen);
             
             /*Gridlayout erstellen*/
             this.setLayout(new GridLayout(Spalten, Zeilen));

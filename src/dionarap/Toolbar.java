@@ -25,10 +25,10 @@ import javax.swing.JToolBar;
  *
  * @author Fabian
  */
-public class Toolbar extends JToolBar{
+public class Toolbar extends JPanel{
    
     Hauptfenster hauptfenster;
-    private ListenerNewGame newGamelst = new ListenerNewGame();
+    private ListenerButton listenerbutton = new ListenerButton();
     private JPanel pnewGame = new JPanel();
     private JButton btnnewGame = new JButton("Neues Spiel");
     private JPanel ppunktestand = new JPanel();
@@ -42,16 +42,11 @@ public class Toolbar extends JToolBar{
     private float panelwidth = 100;
     private float panelheight = 65;
     private Dimension prefsize = new Dimension((int)panelwidth, (int)panelheight);
-
-
-    
-
-
     
     Toolbar(Hauptfenster hauptfenster){
         
         this.hauptfenster = hauptfenster;
-        this.setFloatable(false); //Toolbar unbeweglich
+        //this.setFloatable(false); //Toolbar unbeweglich
         int gegneranzahl = hauptfenster.getModel().getOpponentCount();
         final int MaxGegner = gegneranzahl;
         int punkteanzahl = hauptfenster.getModel().getScore();
@@ -60,7 +55,8 @@ public class Toolbar extends JToolBar{
         //New Game
         pnewGame.setPreferredSize(prefsize);
         pnewGame.setLayout(new BoxLayout(pnewGame, BoxLayout.Y_AXIS));
-        btnnewGame.addActionListener(newGamelst);
+        btnnewGame.setActionCommand("NewGame");
+        btnnewGame.addActionListener(listenerbutton);
         btnnewGame.setEnabled(false);
         btnnewGame.setAlignmentX(Component.CENTER_ALIGNMENT);
         pnewGame.add(Box.createVerticalGlue());
@@ -105,6 +101,8 @@ public class Toolbar extends JToolBar{
         psettings.setPreferredSize(prefsize);
         psettings.setLayout(new BoxLayout(psettings, BoxLayout.Y_AXIS));
         btnsettings.setAlignmentX(Component.CENTER_ALIGNMENT);
+        btnsettings.setActionCommand("Settings");
+        btnsettings.addActionListener(listenerbutton);
         psettings.add(Box.createVerticalGlue());
         psettings.add(btnsettings);
         psettings.add(Box.createVerticalGlue());
@@ -117,7 +115,6 @@ public class Toolbar extends JToolBar{
         this.add(pmunition);
         this.add(pspielfortschritt);
         this.add(psettings);
-        
     }
     
     public void setNewGameButton(){
