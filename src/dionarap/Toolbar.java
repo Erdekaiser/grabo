@@ -15,7 +15,9 @@ import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTextField;
@@ -28,13 +30,15 @@ import javax.swing.JToolBar;
 public class Toolbar extends JPanel{
    
     Hauptfenster hauptfenster;
+    IconLoader loader = IconLoader.getTheme();
     private ListenerButton listenerbutton = new ListenerButton();
     private JPanel pnewGame = new JPanel();
     private JButton btnnewGame = new JButton("Neues Spiel");
     private JPanel ppunktestand = new JPanel();
     private JTextField txtpunkte = new JTextField(5);
     private JPanel pmunition = new JPanel();
-    //Obj. für Muniton fehlt noch
+    private JLabel lmunition[] = new JLabel[3];
+    private ImageIcon imunition = new ImageIcon();
     private JPanel pspielfortschritt = new JPanel();
     private JProgressBar pbspielfortschritt;
     private JPanel psettings = new JPanel();
@@ -42,6 +46,13 @@ public class Toolbar extends JPanel{
     private float panelwidth = 100;
     private float panelheight = 100;
     private Dimension prefsize = new Dimension((int)panelwidth, (int)panelheight);
+    
+    //Thread für das Blinken
+    Thread blinkThread;
+    //Runnable Objekt
+    MunitionBlink mBlink;
+
+    
     
     Toolbar(Hauptfenster hauptfenster){
         
@@ -51,7 +62,11 @@ public class Toolbar extends JPanel{
         final int MaxGegner = gegneranzahl;
         int punkteanzahl = hauptfenster.getModel().getScore();
         pbspielfortschritt = new JProgressBar(-MaxGegner, 0);
-       
+        lmunition[0] = new JLabel();
+        lmunition[1] = new JLabel();
+        lmunition[2] = new JLabel();
+        imunition = loader.getAmmoIcon();
+        
         //New Game
         pnewGame.setPreferredSize(prefsize);
         pnewGame.setLayout(new BoxLayout(pnewGame, BoxLayout.Y_AXIS));
@@ -81,8 +96,17 @@ public class Toolbar extends JPanel{
         pmunition.setPreferredSize(prefsize);
         pmunition.setBorder(BorderFactory.createLineBorder(Color.black));
         pmunition.setBorder(BorderFactory.createTitledBorder("Munition"));
-        //pmunition.setLayout(new BoxLayout(pmunition, BoxLayout.X_AXIS));
-        
+        pmunition.setLayout(new BoxLayout(pmunition, BoxLayout.X_AXIS));
+        lmunition[0].setBorder(BorderFactory.createLineBorder(Color.black,1));
+        lmunition[1].setBorder(BorderFactory.createLineBorder(Color.black,1));
+        lmunition[2].setBorder(BorderFactory.createLineBorder(Color.black,1));
+        pmunition.add(Box.createHorizontalGlue());
+	pmunition.add(lmunition[2]);
+	pmunition.add(new Box.Filler(new Dimension(0,0), new Dimension(5,1),  new Dimension(10,1)));
+	pmunition.add(lmunition[1]);
+	pmunition.add(new Box.Filler(new Dimension(0,0), new Dimension(5,1),  new Dimension(10,1)));
+	pmunition.add(lmunition[0]);
+        pmunition.add(Box.createHorizontalGlue());
         
         //Spielfortschritts
         pspielfortschritt.setPreferredSize(prefsize);
@@ -115,6 +139,10 @@ public class Toolbar extends JPanel{
         this.add(pmunition);
         this.add(pspielfortschritt);
         this.add(psettings);
+        
+        //Thread f. Blinken
+        mBlink = new MunitionBlink(this);
+        blinkThread = new Thread(mBlink);
     }
     
     public void setNewGameButton(){
@@ -127,5 +155,46 @@ public class Toolbar extends JPanel{
     
     public void setOpponent(int gegner){
         this.pbspielfortschritt.setValue(-gegner);
+    }
+    
+    public void setAmmo(int ammo) {
+	for(int i = 0; i < 3; i++ ) {
+            lmunition[i].setIcon(null);
+            lmunition[i].setText("");
+            lmunition[i].setBorder(null);
+	}
+	if(ammo == 1)
+            stopBlinkThread();
+	if(ammo <= 3) {
+            for(int i = 0; i < ammo; i++ ) {
+		lmunition[i].setIcon(imunition);
+		lmunition[i].setBorder(BorderFactory.createLineBorder(Color.black, 1));
+            }
+	} else {
+            for(int i = 0; i < 2; i++ ) {
+		lmunition[i].setIcon(imunition);
+            }
+            lmunition[2].setText(Integer.toString(ammo));
+        }			
+}
+    
+    void stopBlinkThread() {
+	if(blinkThread.isAlive() == true) {
+        	blinkThread.interrupt();
+	}
+    }
+	
+    void startBlinkThread() {
+	if(blinkThread.isAlive() == false) {
+        	blinkThread = new Thread(mBlink);
+		blinkThread.start();
+	}
+    }
+    
+    public void ammoBlink(boolean blinkOn) {
+	if(blinkOn)
+            pmunition.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.red, 1), "Munition"));
+	else
+            pmunition.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black, 1), "Munition"));		
     }
 }

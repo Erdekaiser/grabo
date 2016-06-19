@@ -36,7 +36,7 @@ public Hauptfenster(Point fensterpos, String toolbarpos, HashMap<String, String>
     
     navigator = new Navigator(this);
     toolbar = new Toolbar(this);
-    
+    toolbar.setAmmo(this.getModel().getShootAmount());
     //Listener werden erzeugt
     TastenListener tastenListener = new TastenListener();
     KomponentenListener komponentenListener = new KomponentenListener();
@@ -97,8 +97,8 @@ public void startNewGame(){
     TEMPspieleinstellungen = settings.getSettings();
     this.navigator.dispose();
     this.dispose();
-     
-        
+    //this.getModel().removeModelChangedEventListener(this.getSettings().getListenerModel());
+    this.getController().deactivateMultiThreading();
     new Hauptfenster(fensterpos, toolbarpos, TEMPspieleinstellungen);
     //System.out.println("startNewGame: " + TOOLBARPOS);
 }

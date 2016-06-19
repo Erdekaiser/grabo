@@ -31,6 +31,7 @@ public class ListenerModel implements DionaRapListener
         mainfenster.getSpielfeld().draw();
         mainfenster.getToolbar().setScore(mainfenster.getModel().getScore());
         mainfenster.getToolbar().setOpponent(mainfenster.getModel().getOpponentCount());
+        mainfenster.getToolbar().setAmmo(mainfenster.getModel().getShootAmount());
     }
 
     @Override
