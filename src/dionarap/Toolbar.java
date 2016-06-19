@@ -40,7 +40,7 @@ public class Toolbar extends JPanel{
     private JPanel psettings = new JPanel();
     private JButton btnsettings = new JButton("Settings");
     private float panelwidth = 100;
-    private float panelheight = 65;
+    private float panelheight = 100;
     private Dimension prefsize = new Dimension((int)panelwidth, (int)panelheight);
     
     Toolbar(Hauptfenster hauptfenster){

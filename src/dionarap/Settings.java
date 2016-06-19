@@ -35,8 +35,8 @@ public class Settings {
     private final DionaRapModel model;
     private final DionaRapController controller;
     
-    Settings(Hauptfenster fenster, HashMap<String, String>TEMPspieleinstellungen){
-        this.spieleinstellungen = TEMPspieleinstellungen;
+    Settings(Hauptfenster fenster, HashMap<String, String> TEMPspieleinstellungen){
+        spieleinstellungen = TEMPspieleinstellungen;
         initSpieleinstellungen();
         this.fenster = fenster;
         model = new DionaRapModel(
@@ -49,7 +49,7 @@ public class Settings {
         //Immer wenn sich das Spielfeld ändert wird der listener aufgerufen 
         ListenerModel listenerModel = new ListenerModel(fenster);
         model.addModelChangedEventListener(listenerModel);
-                
+                        
         feld = new Spielfeld(fenster, Integer.parseInt(spieleinstellungen.get(AZS)), Integer.parseInt(spieleinstellungen.get(ASS)));
         setSettings(spieleinstellungen);
         
@@ -67,7 +67,10 @@ public class Settings {
         return this.spieleinstellungen;
     }
     
-    public void setSettings(Map<String, String>map){
+    public void setSettings(HashMap<String, String> map){
+        spieleinstellungen = map;
+        //System.out.println(map);
+        //System.out.println(spieleinstellungen);
         if(conf == null){
             conf = new MTConfiguration();
         }
@@ -77,7 +80,7 @@ public class Settings {
         conf.setRandomOpponentWaitTime(Boolean.parseBoolean(spieleinstellungen.get(ZWG))); 
         conf.setAvoidCollisionWithObstacles(Boolean.parseBoolean(spieleinstellungen.get(GKH)));
         conf.setAvoidCollisionWithOpponent(Boolean.parseBoolean(spieleinstellungen.get(GKG))); 
-        
+        //spieleinstellungen.put(AZS, (map.get(AZS)));
         //Stand Aufgabe müssen diese Werte nicht geändert werden können.
         conf.setAlgorithmAStarActive(true); 
         conf.setMinimumTime(800);               // 0,8 Sekunden
@@ -85,7 +88,6 @@ public class Settings {
         conf.setDynamicOpponentWaitTime(false); // immer gleichlang warten 
             
         controller.setMultiThreaded(conf);
-        //fenster.repaint();
     }
     
     private void initSpieleinstellungen(){
@@ -100,7 +102,7 @@ public class Settings {
             spieleinstellungen.put(ASS, "15");
             spieleinstellungen.put(AHI, "10");
             spieleinstellungen.put(ADG, "10");
-            System.out.println(spieleinstellungen);
+            //System.out.println(spieleinstellungen);
         }
     }
     

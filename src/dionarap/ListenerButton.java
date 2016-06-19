@@ -5,6 +5,7 @@
  */
 package dionarap;
 
+import de.fhwgt.dionarap.model.data.MTConfiguration;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JButton;
@@ -14,9 +15,6 @@ import javax.swing.JButton;
  * @author Fabian
  */
 public class ListenerButton implements ActionListener{
-    
-    private SettingsDialog SettingsDialog;
-    
     @Override
     public void actionPerformed(ActionEvent e){
         JButton button = (JButton)e.getSource();
@@ -27,7 +25,6 @@ public class ListenerButton implements ActionListener{
         }
         
         if(e.getActionCommand() == "Settings"){
-            System.out.println("Settings gedrückt!");
             hf.newSettingDialog();
         }
     }
