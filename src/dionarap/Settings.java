@@ -69,7 +69,7 @@ public final class Settings {
     }
     
     public HashMap<String, String> getSettings(){
-        return this.spieleinstellungen;
+        return spieleinstellungen;
     }
     
     public void setSettings(HashMap<String, String> map){

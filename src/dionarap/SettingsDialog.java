@@ -33,7 +33,7 @@ public class SettingsDialog extends JDialog implements ActionListener, ChangeLis
     //Allg. Komponenten
     private Hauptfenster hauptfenster;
     private MTConfiguration conf = new MTConfiguration();
-    private HashMap<String, String>TEMP_spieleinstellungen = new HashMap<String, String>();
+    private HashMap<String, String>TEMP_spieleinstellungen;
     private Dimension prefSize = new Dimension(250,100);
     private static final int SLIDER_MIN = 0;
     private static final int SLIDER_MAX = 10000;
@@ -78,10 +78,8 @@ public class SettingsDialog extends JDialog implements ActionListener, ChangeLis
         super(hf, "Settings");
         this.hauptfenster = hf;
         
-        TEMP_spieleinstellungen = hf.getSettings().getSettings();
-        
-        System.out.println(TEMP_spieleinstellungen);
-        
+        TEMP_spieleinstellungen = (HashMap) hf.getSettings().getSettings().clone();
+
         //Slider Init (MIN, MAX, INIT) Werte
         swbg = new JSlider(JSlider.HORIZONTAL,
                 SLIDER_MIN, SLIDER_MAX, Integer.parseInt(TEMP_spieleinstellungen.get(Settings.WGB)));
@@ -227,22 +225,16 @@ public class SettingsDialog extends JDialog implements ActionListener, ChangeLis
         this.setLocationRelativeTo(hf);
         this.setVisible(true);
     }
-    
-    public void onClose(){
-        TEMP_spieleinstellungen = hauptfenster.getSettings().getSettings();
-        hauptfenster.getSettings().setSettings(TEMP_spieleinstellungen);
-        dispose();
-    }
-    
+        
     //f.Buttons & TextFields
     @Override
     public void actionPerformed(ActionEvent e) {
         if("CloswWindow".equals(e.getActionCommand())){
-            onClose();
+            TEMP_spieleinstellungen = hauptfenster.getSettings().getSettings();
+            dispose();
         }
         if("NewGame".equals(e.getActionCommand())){
             hauptfenster.getSettings().setSettings(TEMP_spieleinstellungen);
-            System.out.println("NewGame: "+ TEMP_spieleinstellungen);
             hauptfenster.startNewGame();
         }
     }
