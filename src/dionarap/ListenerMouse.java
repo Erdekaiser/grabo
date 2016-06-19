@@ -68,7 +68,11 @@ public class ListenerMouse implements MouseListener{
                     if(mouseX == playerX && mouseY < playerY) hauptfenster.getController().movePlayer(8);
                     if(mouseX < playerX && mouseY < playerY) hauptfenster.getController().movePlayer(7);
                     if(mouseX > playerX && mouseY == playerY) hauptfenster.getController().movePlayer(6);
-                    if(mouseX == playerX && mouseY == playerY) hauptfenster.getController().shoot();
+                    if(hauptfenster.getModel().getShootAmount() == 0){
+                        hauptfenster.getToolbar().startBlinkThread();
+                    }else{
+                        if(mouseX == playerX && mouseY == playerY) hauptfenster.getController().shoot();
+                    }
                     if(mouseX < playerX && mouseY == playerY) hauptfenster.getController().movePlayer(4);
                     if(mouseX > playerX && mouseY > playerY) hauptfenster.getController().movePlayer(3);
                     if(mouseX == playerX && mouseY > playerY) hauptfenster.getController().movePlayer(2);

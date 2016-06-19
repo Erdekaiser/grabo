@@ -8,6 +8,7 @@ package dionarap;
 import de.fhwgt.dionarap.controller.DionaRapController;
 import de.fhwgt.dionarap.model.data.DionaRapModel;
 import de.fhwgt.dionarap.model.data.MTConfiguration;
+import de.fhwgt.dionarap.model.objects.Ammo;
 import java.util.HashMap;
 
 /**
@@ -34,23 +35,27 @@ public final class Settings {
     private final DionaRapModel model;
     private final DionaRapController controller;
     ListenerModel listenerModel;
+    Ammo ammo;
     
     Settings(Hauptfenster fenster, HashMap<String, String> TEMPspieleinstellungen){
         spieleinstellungen = TEMPspieleinstellungen;
+        ammo = new Ammo();
         initSpieleinstellungen();
         this.fenster = fenster;
+
         model = new DionaRapModel(
             Integer.parseInt(spieleinstellungen.get(ASS)),
             Integer.parseInt(spieleinstellungen.get(AZS)),
             Integer.parseInt(spieleinstellungen.get(ADG)),
             Integer.parseInt(spieleinstellungen.get(AHI))
             );
-        model.setShootAmount(5);
+        model.setShootAmount(3); //Spieler erhält 3 Schuss
+        model.setAmmoValue(3);
+        model.addAmmo(ammo);
         controller = new DionaRapController(model);
         //Immer wenn sich das Spielfeld ändert wird der listener aufgerufen 
         listenerModel = new ListenerModel(fenster);
-        model.addModelChangedEventListener(listenerModel);
-                        
+        model.addModelChangedEventListener(listenerModel);              
         feld = new Spielfeld(fenster, Integer.parseInt(spieleinstellungen.get(AZS)), Integer.parseInt(spieleinstellungen.get(ASS)));
         setSettings(spieleinstellungen);
     }

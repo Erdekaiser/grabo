@@ -36,7 +36,7 @@ public Hauptfenster(Point fensterpos, String toolbarpos, HashMap<String, String>
     
     navigator = new Navigator(this);
     toolbar = new Toolbar(this);
-    toolbar.setAmmo(this.getModel().getShootAmount());
+ 
     //Listener werden erzeugt
     TastenListener tastenListener = new TastenListener();
     KomponentenListener komponentenListener = new KomponentenListener();
@@ -49,9 +49,9 @@ public Hauptfenster(Point fensterpos, String toolbarpos, HashMap<String, String>
     this.addKeyListener(tastenListener);
       
     this.add(settings.getSpielfeld());
-    this.setVisible(true);
+    this.setVisible(true);  
     toolbarUpDown(toolbarpos);
- 
+     
     this.pack();
     
     settings.getSpielfeld().draw();

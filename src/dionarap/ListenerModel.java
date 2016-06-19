@@ -27,11 +27,12 @@ public class ListenerModel implements DionaRapListener
     @Override
     public void modelChanged(DionaRapChangedEvent drce) 
     {
-        mainfenster.getSpielfeld().delete();
-        mainfenster.getSpielfeld().draw();
         mainfenster.getToolbar().setScore(mainfenster.getModel().getScore());
         mainfenster.getToolbar().setOpponent(mainfenster.getModel().getOpponentCount());
-        mainfenster.getToolbar().setAmmo(mainfenster.getModel().getShootAmount());
+        mainfenster.getToolbar().setAmmo(mainfenster.getModel().getShootAmount(), IconLoader.getTheme().getAmmoIcon());
+
+        mainfenster.getSpielfeld().delete();
+        mainfenster.getSpielfeld().draw();
     }
 
     @Override
@@ -51,6 +52,8 @@ public class ListenerModel implements DionaRapListener
     
     private void spielendeDialog(String nachricht, String titel, ImageIcon icon){
         String[] options = new String[]{"Neues Spiel", "Abbruch"};
+        
+        mainfenster.getController().deactivateMultiThreading();
         
         int n = JOptionPane.showOptionDialog(mainfenster,
                 nachricht,

@@ -95,7 +95,7 @@ public class IconLoader {
             if(tempdatei.exists()) return new ImageIcon(tempdatei.getAbsolutePath());
             //System.out.println(tempdatei.getAbsolutePath());
         }
-        System.out.println("Dateipfad: " + datei + " nicht gefunden!");
+        //System.out.println("Dateipfad: " + datei + " nicht gefunden!");
         return null;
     }
     

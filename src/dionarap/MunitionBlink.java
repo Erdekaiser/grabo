@@ -20,7 +20,7 @@ public class MunitionBlink implements Runnable{
 
         @Override
 	public void run() {
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 5; i++) {
 			
 			//Falls spieler Ammo holt
 			if(Thread.interrupted()){

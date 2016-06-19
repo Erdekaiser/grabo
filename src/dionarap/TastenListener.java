@@ -26,7 +26,11 @@ public class TastenListener implements KeyListener
             if(beschriftung != '5')
                 fenster.getController().movePlayer((int) beschriftung-48);
             else
-                fenster.getController().shoot();
+                if(fenster.getModel().getShootAmount() == 0){
+                    fenster.getToolbar().startBlinkThread();
+                }else{
+                    fenster.getController().shoot();
+                }
         }
         
         //"Focus liegt auf dem fenster"

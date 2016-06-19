@@ -48,7 +48,7 @@ public class PopUp extends JPopupMenu
         squarehead.setBackground(Color.LIGHT_GRAY);
         vader.setBackground(Color.LIGHT_GRAY);
             
-        System.out.println(currenttheme);
+        //System.out.println(currenttheme);
         //Einfärben des momentan gewählten thema
         switch(currenttheme)
         {
@@ -116,6 +116,7 @@ public class PopUp extends JPopupMenu
             {
                 IconLoader.getTheme().setTheme("vader");
                 fenster.getSpielfeld().draw();
+                fenster.getToolbar().revalidate();
             }
         });
         add(alien);

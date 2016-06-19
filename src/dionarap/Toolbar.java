@@ -11,6 +11,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -39,6 +40,7 @@ public class Toolbar extends JPanel{
     private JPanel pmunition = new JPanel();
     private JLabel lmunition[] = new JLabel[3];
     private ImageIcon imunition = new ImageIcon();
+    private Graphics2D muni2D;
     private JPanel pspielfortschritt = new JPanel();
     private JProgressBar pbspielfortschritt;
     private JPanel psettings = new JPanel();
@@ -157,8 +159,9 @@ public class Toolbar extends JPanel{
         this.pbspielfortschritt.setValue(-gegner);
     }
     
-    public void setAmmo(int ammo) {
-	for(int i = 0; i < 3; i++ ) {
+    public void setAmmo(int ammo, ImageIcon iammo) {
+	imunition = iammo;
+        for(int i = 0; i < 3; i++ ) {
             lmunition[i].setIcon(null);
             lmunition[i].setText("");
             lmunition[i].setBorder(null);
@@ -174,8 +177,10 @@ public class Toolbar extends JPanel{
             for(int i = 0; i < 2; i++ ) {
 		lmunition[i].setIcon(imunition);
             }
-            lmunition[2].setText(Integer.toString(ammo));
-        }			
+            lmunition[2].setText("*"+Integer.toString(ammo));
+            
+        }
+        this.validate();
 }
     
     void stopBlinkThread() {
@@ -192,9 +197,10 @@ public class Toolbar extends JPanel{
     }
     
     public void ammoBlink(boolean blinkOn) {
-	if(blinkOn)
+	if(blinkOn){
             pmunition.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.red, 1), "Munition"));
-	else
-            pmunition.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black, 1), "Munition"));		
-    }
+        }else{
+            pmunition.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black, 1), "Munition"));
+        }
+    }    
 }

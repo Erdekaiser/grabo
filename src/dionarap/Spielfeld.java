@@ -70,7 +70,7 @@ private GameStatus status = GameStatus.game;
         //Schleife um array zu durchlaufen
         for(int i = 0; i < pawns.length; i++)
         {
-            
+
             if(model.isGameOver()){
                 this.updateStatus(GameStatus.gameover);
             }
@@ -122,8 +122,10 @@ private GameStatus status = GameStatus.game;
             {
                 spielfeld_array[pawns[i].getX()][pawns[i].getY()].setIcon(loader.getDestructionIcon());
             }
+            fenster.getToolbar().setAmmo(fenster.getModel().getShootAmount(), IconLoader.getTheme().getAmmoIcon());  
         }  
     }
+   
     
     public void delete()
     {
